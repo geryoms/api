@@ -1,0 +1,54 @@
+# ===================================================================
+# Ficheros de Log
+# ===================================================================
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ===================================================================
+# Ficheros compilados de Java y directorios de construcción
+# ===================================================================
+target/
+.mvn/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+
+# ===================================================================
+# Ficheros específicos de IDEs
+# ===================================================================
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Eclipse / Spring Tool Suite (STS)
+.classpath
+.project
+.settings/
+.springBeans
+.sts4-cache/
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# VS Code
+.vscode/
+
+# ===================================================================
+# Ficheros del sistema operativo
+# ===================================================================
+# Mac
+.DS_Store
+# Windows
+Thumbs.db

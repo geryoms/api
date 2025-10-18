@@ -74,8 +74,8 @@ Configuración
 
 Clona el repositorio:
 
-git clone [https://github.com/tu-usuario/tu-repositorio.git](https://github.com/tu-usuario/tu-repositorio.git)
-cd tu-repositorio
+git clone [https://github.com/geryoms/api]
+cd api
 
 
 Configura la base de datos:
@@ -100,7 +100,7 @@ Una vez configurado, puedes arrancar la aplicación usando el wrapper de Maven i
 ./mvnw spring-boot:run
 
 
-El servidor se iniciará en http://localhost:8088.
+El servidor se iniciará en http://localhost:8080.
 
 🌐 API Endpoints
 

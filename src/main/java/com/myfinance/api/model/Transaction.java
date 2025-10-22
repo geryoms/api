@@ -18,20 +18,20 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-@Entity // Le dice a JPA que esta clase es una tabla en la BD
-@Data   // De Lombok: crea getters, setters, toString(), etc. automáticamente
+@Entity 
+@Data 
 public class Transaction {
 
-    @Id // Marca este campo como la clave primaria (ID)
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // El ID se auto-genera
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank // No puede ser nulo ni estar vacío
-    @Size(min = 3, max = 100) // Debe tener entre 3 y 100 caracteres
+    @NotBlank
+    @Size(min = 3, max = 100) 
     private String description;
 
-    @NotNull // No puede ser nulo
-    @DecimalMin(value = "0.01") // El valor mínimo debe ser 0.01
+    @NotNull
+    @DecimalMin(value = "0.01")
     private BigDecimal amount;
 
     @NotNull
@@ -40,12 +40,12 @@ public class Transaction {
     @NotBlank
     private String type;
 
-    @ManyToOne(fetch = FetchType.LAZY) // Muchas transacciones pueden pertenecer a Un usuario
-    @JoinColumn(name = "user_id") // Nombre de la columna en la BD que guardará el ID del usuario
-    @JsonIgnore // Evita que se incluya toda la info del usuario al devolver una transacción
+    @ManyToOne(fetch = FetchType.LAZY) 
+    @JoinColumn(name = "user_id")
+    @JsonIgnore 
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", nullable = true) // nullable=true permite transacciones sin categoría
+    @JoinColumn(name = "category_id", nullable = true)
     private Category category;
 }

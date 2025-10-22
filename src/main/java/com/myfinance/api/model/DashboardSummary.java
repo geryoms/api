@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor // Crea un constructor con todos los argumentos
+@AllArgsConstructor
 public class DashboardSummary {
     private BigDecimal totalIncome;
     private BigDecimal totalExpense;

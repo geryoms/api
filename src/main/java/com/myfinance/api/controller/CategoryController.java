@@ -29,14 +29,13 @@ public class CategoryController {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    // GET (Listar) - Ya lo tenías
     @GetMapping
     public List<Category> getUserCategories() {
         User currentUser = getCurrentUser();
         return categoryRepository.findByUserId(currentUser.getId());
     }
 
-    // POST (Crear) - Ya lo tenías
+
     @PostMapping
     public ResponseEntity<Category> createCategory(@Valid @RequestBody Category category) {
         User currentUser = getCurrentUser();
@@ -45,16 +44,12 @@ public class CategoryController {
         return ResponseEntity.ok(savedCategory);
     }
 
-    // --- AÑADE ESTOS MÉTODOS ---
-
-    // PUT (Actualizar)
     @PutMapping("/{id}")
     public ResponseEntity<Category> updateCategory(@PathVariable Long id, @Valid @RequestBody Category categoryDetails) {
         User currentUser = getCurrentUser();
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found"));
 
-        // Comprobamos que la categoría pertenece al usuario
         if (!category.getUser().getId().equals(currentUser.getId())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
@@ -64,27 +59,23 @@ public class CategoryController {
         return ResponseEntity.ok(updatedCategory);
     }
 
-    // DELETE (Borrar)
+   
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCategory(@PathVariable Long id) {
         User currentUser = getCurrentUser();
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found"));
 
-        // Comprobamos que la categoría pertenece al usuario
+     
         if (!category.getUser().getId().equals(currentUser.getId())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
-        // OPCIONAL: Antes de borrar, podrías comprobar si alguna transacción usa esta categoría
-        // y decidir qué hacer (impedir el borrado, poner la categoría de las transacciones a null, etc.)
-        // Por ahora, la borraremos directamente.
-
         categoryRepository.delete(category);
-        return ResponseEntity.noContent().build(); // 204 No Content es una respuesta estándar para un DELETE exitoso
+        return ResponseEntity.noContent().build();
     }
 
-    // Método de ayuda para no repetir código
+
     private User getCurrentUser() {
         return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }

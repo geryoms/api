@@ -16,14 +16,12 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "users") // Es buena práctica nombrar las tablas en plural
-@Data
+@Table(name = "users") 
 @NoArgsConstructor
-public class User implements UserDetails { // Implementamos UserDetails para la seguridad
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,18 +29,17 @@ public class User implements UserDetails { // Implementamos UserDetails para la 
 
     @NotBlank
     @Size(min = 3, max = 50)
-    @Column(unique = true) // El email debe ser único
-    @Email // Valida que el formato sea de email
+    @Column(unique = true) 
+    @Email
     private String email;
 
     @NotBlank
-    @Size(min = 8, max = 100) // La contraseña tendrá un hash, por eso el max es grande
+    @Size(min = 8, max = 100)
     private String password;
 
-    private String role = "USER"; // Por defecto, todos son usuarios normales
+    private String role = "USER"; 
 
-    // --- Métodos de la interfaz UserDetails ---
-    // Spring Security los usará para gestionar la autenticación y autorización
+   
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -51,10 +48,10 @@ public class User implements UserDetails { // Implementamos UserDetails para la 
 
     @Override
     public String getUsername() {
-        return this.email; // Usaremos el email como nombre de usuario para el login
+        return this.email; 
     }
 
-    // Estos métodos los dejamos en true por ahora
+    
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -73,5 +70,24 @@ public class User implements UserDetails { // Implementamos UserDetails para la 
     @Override
     public boolean isEnabled() {
         return true;
+    }
+   
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public String getPassword() {
+        return this.password;
     }
 }

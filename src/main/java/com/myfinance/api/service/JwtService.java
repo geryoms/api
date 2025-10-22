@@ -12,32 +12,28 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtService {
 
-    // 1. Clave Secreta: DEBES cambiar esto por una cadena larga y segura.
-    // Puedes generar una en https://www.allkeysgenerator.com/ (256-bit)
-    private static final String SECRET_KEY = "======================MyFinanceSecretKey======================";
 
-    // 2. Genera un token para un usuario
+    private static final String SECRET_KEY = "MyFinanceSecretKey";
+
+    
     public String generateToken(UserDetails userDetails) {
         return Jwts.builder()
-                .subject(userDetails.getUsername()) // El "sujeto" del token será el email del usuario
-                .issuedAt(new Date(System.currentTimeMillis())) // Fecha de creación
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // Caduca en 24 horas
-                .signWith(getSigningKey()) // Firma el token con la clave secreta
+                .subject(userDetails.getUsername()) 
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+                .signWith(getSigningKey())
                 .compact();
     }
 
-    // 3. Extrae el email (username) del token
     public String extractUsername(String token) {
         return extractAllClaims(token).getSubject();
     }
 
-    // 4. Valida si un token es correcto
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-    // --- Métodos privados de ayuda ---
 
     private boolean isTokenExpired(String token) {
         return extractAllClaims(token).getExpiration().before(new Date());

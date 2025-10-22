@@ -9,17 +9,9 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.myfinance.api.model.Transaction;
 
-// JpaRepository nos da todos los métodos comunes: save, findById, findAll, delete...
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
-/**
-     * Busca todas las transacciones para un ID de usuario específico.
-     * 'LEFT JOIN FETCH t.category' le dice a Hibernate que cargue la categoría
-     * asociada en la misma consulta de base de datos, evitando problemas de
-     * carga perezosa (Lazy Loading) y mejorando el rendimiento (evita el problema N+1).
-     * @param userId El ID del usuario.
-     * @return Una lista de transacciones con sus categorías ya cargadas.
-     */
+
    @Query("SELECT t FROM Transaction t LEFT JOIN FETCH t.category WHERE t.user.id = :userId")
 List<Transaction> findByUserId(Long userId);
 

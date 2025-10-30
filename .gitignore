@@ -10,7 +10,7 @@ yarn-error.log*
 # Ficheros compilados de Java y directorios de construcción
 # ===================================================================
 target/
-.mvn/
+
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup

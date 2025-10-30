@@ -16,7 +16,7 @@ import com.myfinance.api.repository.TransactionRepository;
 
 @RestController
 @RequestMapping("/api/dashboard")
-public class DashboardController {
+public class DashboardController extends BaseController {
 
     @Autowired
     private TransactionRepository transactionRepository;

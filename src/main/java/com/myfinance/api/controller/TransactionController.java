@@ -3,14 +3,14 @@ package com.myfinance.api.controller;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity; // Importa ResponseEntity
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.DeleteMapping; // Importa DeleteMapping
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable; // Importa PathVariable
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping; // Importa PutMapping
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,14 +22,14 @@ import com.myfinance.api.model.User;
 import com.myfinance.api.repository.CategoryRepository;
 import com.myfinance.api.repository.TransactionRepository;
 
-import org.slf4j.Logger; // Importa Logger
+import org.slf4j.Logger; 
 import org.slf4j.LoggerFactory;
 
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/transactions")
-public class TransactionController {
+public class TransactionController extends BaseController {
 
     private static final Logger log = LoggerFactory.getLogger(TransactionController.class);
 
@@ -131,10 +131,5 @@ public List<Transaction> getAllTransactions() {
 
         transactionRepository.delete(transaction);
         return ResponseEntity.ok().build();
-    }
-
-   
-    private User getCurrentUser() {
-        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

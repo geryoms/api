@@ -36,21 +36,17 @@ import com.myfinance.api.service.JwtService;
 import com.myfinance.api.service.TransactionService;
 
 @WebMvcTest(TransactionController.class)
-// IMPORTANTE: Importamos TransactionService para que el test use la lógica real del servicio
-// pero con los repositorios mockeados definidos abajo.
 @Import({SecurityConfig.class, TransactionService.class})
 public class TransactionControllerTests {
 
     @Autowired private MockMvc mockMvc;
     @Autowired private ObjectMapper objectMapper;
 
-    // Mocks de Repositorios (El TransactionService usará estos mocks)
     @MockBean private TransactionRepository transactionRepository;
     @MockBean private CategoryRepository categoryRepository;
     @MockBean private AccountRepository accountRepository;
     @MockBean private UserRepository userRepository;
     
-    // Mocks de Seguridad
     @MockBean private JwtService jwtService;
     @MockBean private UserDetailsService userDetailsService;
 
@@ -59,17 +55,14 @@ public class TransactionControllerTests {
 
     @BeforeEach
     void setUp() throws Exception {
-        // Configuración básica del usuario
         mockUser = new User();
         setPrivateField(mockUser, "id", 1L);
         mockUser.setEmail("test@test.com");
 
-        // Configuración de una cuenta válida
         mockAccount = new Account();
         setPrivateField(mockAccount, "id", 10L);
         mockAccount.setName("Banco Test");
         mockAccount.setUser(mockUser);
-        // Inicializamos saldo para evitar NullPointerException en la lógica del servicio
         mockAccount.setCurrentBalance(new BigDecimal("100.00")); 
     }
 
@@ -81,7 +74,6 @@ public class TransactionControllerTests {
 
     @Test
     void whenPostTransaction_withValidAccount_thenCreatesTransaction() throws Exception {
-        // GIVEN
         Transaction transactionRequest = new Transaction();
         transactionRequest.setDescription("Gasto Supermercado");
         transactionRequest.setAmount(new BigDecimal("50.00"));
@@ -97,7 +89,6 @@ public class TransactionControllerTests {
         given(accountRepository.findById(10L)).willReturn(Optional.of(mockAccount));
         given(transactionRepository.save(any(Transaction.class))).willReturn(savedTransaction);
 
-        // WHEN & THEN
         mockMvc.perform(post("/api/transactions")
                 .with(user(mockUser))
                 .contentType(MediaType.APPLICATION_JSON)
@@ -108,7 +99,6 @@ public class TransactionControllerTests {
 
     @Test
     void whenPostTransaction_withAccountFromAnotherUser_thenForbidden() throws Exception {
-        // GIVEN
         User anotherUser = new User();
         setPrivateField(anotherUser, "id", 2L);
 
@@ -125,7 +115,6 @@ public class TransactionControllerTests {
 
         given(accountRepository.findById(99L)).willReturn(Optional.of(otherAccount));
 
-        // WHEN & THEN
         mockMvc.perform(post("/api/transactions")
                 .with(user(mockUser))
                 .contentType(MediaType.APPLICATION_JSON)
@@ -135,7 +124,6 @@ public class TransactionControllerTests {
 
     @Test
     void whenPostIncomeTransaction_thenAccountBalanceIncreases() throws Exception {
-        // GIVEN
         mockAccount.setCurrentBalance(new BigDecimal("100.00"));
         given(accountRepository.findById(10L)).willReturn(Optional.of(mockAccount));
 
@@ -148,14 +136,12 @@ public class TransactionControllerTests {
 
         given(transactionRepository.save(any(Transaction.class))).willReturn(incomeTransaction);
 
-        // WHEN
         mockMvc.perform(post("/api/transactions")
                 .with(user(mockUser))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(incomeTransaction)))
                 .andExpect(status().isOk());
 
-        // THEN
         org.mockito.ArgumentCaptor<Account> accountCaptor = org.mockito.ArgumentCaptor.forClass(Account.class);
         org.mockito.Mockito.verify(accountRepository).save(accountCaptor.capture());
         
@@ -168,7 +154,6 @@ public class TransactionControllerTests {
 
     @Test
     void whenDeleteIncomeTransaction_thenAccountBalanceDecreases() throws Exception {
-        // GIVEN
         mockAccount.setCurrentBalance(new BigDecimal("150.00"));
 
         Transaction existingTransaction = new Transaction();
@@ -181,12 +166,10 @@ public class TransactionControllerTests {
 
         given(transactionRepository.findById(1L)).willReturn(Optional.of(existingTransaction));
 
-        // WHEN
         mockMvc.perform(delete("/api/transactions/1")
                 .with(user(mockUser)))
                 .andExpect(status().isOk());
 
-        // THEN
         org.mockito.ArgumentCaptor<Account> accountCaptor = org.mockito.ArgumentCaptor.forClass(Account.class);
         org.mockito.Mockito.verify(accountRepository).save(accountCaptor.capture());
 
@@ -199,11 +182,8 @@ public class TransactionControllerTests {
 
     @Test
     void whenUpdateTransactionAmount_thenBalanceIsAdjusted() throws Exception {
-        // GIVEN
-        // Saldo inicial: 100
         mockAccount.setCurrentBalance(new BigDecimal("100.00"));
 
-        // Transacción original: GASTO de 20
         Transaction originalTransaction = new Transaction();
         setPrivateField(originalTransaction, "id", 1L);
         originalTransaction.setDescription("Gasto Original");
@@ -212,7 +192,6 @@ public class TransactionControllerTests {
         originalTransaction.setAccount(mockAccount);
         originalTransaction.setUser(mockUser);
 
-        // Datos nuevos: GASTO de 30
         Transaction updateRequest = new Transaction();
         updateRequest.setDescription("Gasto Corregido");
         updateRequest.setAmount(new BigDecimal("30.00"));
@@ -223,19 +202,15 @@ public class TransactionControllerTests {
         given(transactionRepository.findById(1L)).willReturn(Optional.of(originalTransaction));
         given(transactionRepository.save(any(Transaction.class))).willReturn(updateRequest);
 
-        // WHEN
         mockMvc.perform(put("/api/transactions/1")
                 .with(user(mockUser))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateRequest)))
                 .andExpect(status().isOk());
 
-        // THEN
-        // Saldo esperado: 100 (inicio) + 20 (revertir gasto orig) - 30 (aplicar gasto nuevo) = 90
         org.mockito.ArgumentCaptor<Account> accountCaptor = org.mockito.ArgumentCaptor.forClass(Account.class);
         org.mockito.Mockito.verify(accountRepository, org.mockito.Mockito.atLeastOnce()).save(accountCaptor.capture());
 
-        // Capturamos la última llamada al save
         Account finalAccountState = accountCaptor.getValue();
         org.junit.jupiter.api.Assertions.assertEquals(
             new BigDecimal("90.00"),

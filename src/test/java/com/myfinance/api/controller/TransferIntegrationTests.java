@@ -55,7 +55,7 @@ public class TransferIntegrationTests {
         setPrivateField(originAccount, "id", 10L);
         originAccount.setName("Banco");
         originAccount.setUser(mockUser);
-        originAccount.setCurrentBalance(new BigDecimal("100.00")); // Saldo inicial: 100
+        originAccount.setCurrentBalance(new BigDecimal("100.00")); 
 
         destinationAccount = new Account();
         setPrivateField(destinationAccount, "id", 20L);

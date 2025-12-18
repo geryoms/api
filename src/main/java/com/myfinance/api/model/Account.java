@@ -31,6 +31,8 @@ public class Account {
     @NotNull
     private BigDecimal initialBalance;
 
+    private BigDecimal currentBalance;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @JsonIgnore

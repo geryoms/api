@@ -39,6 +39,7 @@ public class AccountController extends BaseController {
     public ResponseEntity<Account> createAccount(@Valid @RequestBody Account account) {
         User currentUser = getCurrentUser();
         account.setUser(currentUser);
+        account.setCurrentBalance(account.getInitialBalance());
         Account savedAccount = accountRepository.save(account);
         return ResponseEntity.ok(savedAccount);
     }

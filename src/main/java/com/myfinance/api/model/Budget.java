@@ -12,45 +12,33 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-@Entity 
-@Data 
-public class Transaction {
+@Entity
+@Table(name = "budgets")
+@Data
+public class Budget {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Size(min = 3, max = 100) 
-    private String description;
-
-    @NotNull
-    @DecimalMin(value = "0.01")
-    private BigDecimal amount;
-
-    @NotNull
-    private LocalDate date;
-
-    @NotBlank
-    private String type;
-
-    @ManyToOne(fetch = FetchType.LAZY) 
-    @JoinColumn(name = "user_id")
-    @JsonIgnore 
-    private User user;
-
+    @NotNull(message = "La categoría es obligatoria")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", nullable = true)
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @NotNull(message = "La cuenta es obligatoria")
+    @NotNull(message = "El monto límite es obligatorio")
+    @DecimalMin(value = "0.01", message = "El monto debe ser positivo")
+    private BigDecimal amount;
+
+    @NotNull(message = "La fecha de inicio es obligatoria")
+    private LocalDate startDate; 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_id", nullable = false)
-    private Account account;
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
+    private User user;
 }

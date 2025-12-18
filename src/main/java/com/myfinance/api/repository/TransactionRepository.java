@@ -18,4 +18,6 @@ List<Transaction> findByUserId(Long userId);
 @Query("SELECT COALESCE(SUM(t.amount), 0) FROM Transaction t WHERE t.user.id = :userId AND t.type = :type AND t.date BETWEEN :start AND :end")
     BigDecimal calculateTotalByTypeAndDateRange(Long userId, String type, LocalDate start, LocalDate end);
 
+    @Query("SELECT COALESCE(SUM(t.amount), 0) FROM Transaction t WHERE t.user.id = :userId AND t.category.id = :categoryId AND t.type = 'GASTO' AND t.date BETWEEN :startDate AND :endDate")
+    BigDecimal calculateTotalByCategoryAndDateRange(Long userId, Long categoryId, LocalDate startDate, LocalDate endDate);
 }

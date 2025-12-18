@@ -18,11 +18,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.web.servlet.MockMvc;
+import static org.mockito.Mockito.mock;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myfinance.api.config.SecurityConfig;
@@ -34,19 +35,33 @@ import com.myfinance.api.service.JwtService;
 @WebMvcTest(AccountController.class)
 @Import(SecurityConfig.class)
 public class AccountControllerTests {
-
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
-    private AccountRepository accountRepository;
+    @Bean
+    public AccountRepository accountRepository() {
+        return mock(AccountRepository.class);
+    }
 
-    @MockBean
-    private JwtService jwtService;
-    @MockBean
-    private UserDetailsService userDetailsService;
+    @Bean
+    public JwtService jwtService() {
+        return mock(JwtService.class);
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return mock(UserDetailsService.class);
+    }
+
 
     @Autowired
+    private AccountRepository accountRepository;
+
+    @Autowired
+    private JwtService jwtService;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
     private ObjectMapper objectMapper;
 
     private User mockUser;

@@ -17,7 +17,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -40,12 +40,12 @@ public class BudgetControllerTests {
     @Autowired private MockMvc mockMvc;
     @Autowired private ObjectMapper objectMapper;
 
-    @MockBean private BudgetRepository budgetRepository;
-    @MockBean private CategoryRepository categoryRepository;
-    @MockBean private JwtService jwtService;
-    @MockBean private UserDetailsService userDetailsService;
-    @MockBean private UserRepository userRepository;
-    @MockBean private TransactionRepository transactionRepository;
+    @MockitoBean private BudgetRepository budgetRepository;
+    @MockitoBean private CategoryRepository categoryRepository;
+    @MockitoBean private JwtService jwtService;
+    @MockitoBean private UserDetailsService userDetailsService;
+    @MockitoBean private UserRepository userRepository;
+    @MockitoBean private TransactionRepository transactionRepository;
 
     private User mockUser;
     private Category mockCategory;

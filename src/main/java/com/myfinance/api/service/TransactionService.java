@@ -102,12 +102,13 @@ public class TransactionService {
         transactionRepository.delete(transaction);
     }
 
-    private void updateAccountBalance(Account account, BigDecimal amount, String type, boolean isReversion) {
+  private void updateAccountBalance(Account account, BigDecimal amount, String type, boolean isReversion) {
         BigDecimal currentBalance = account.getCurrentBalance() != null ? account.getCurrentBalance() : BigDecimal.ZERO;
         
         if ("INGRESO".equalsIgnoreCase(type)) {
             if (isReversion) {
                 account.setCurrentBalance(currentBalance.subtract(amount)); 
+            } else {
                 account.setCurrentBalance(currentBalance.add(amount));
             }
         } else if ("GASTO".equalsIgnoreCase(type)) {
@@ -118,5 +119,5 @@ public class TransactionService {
             }
         }
         accountRepository.save(account);
-    }
+    } 
 }

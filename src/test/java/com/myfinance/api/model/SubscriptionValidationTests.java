@@ -29,7 +29,7 @@ public class SubscriptionValidationTests {
     void whenSubscriptionHasNoName_thenValidationFails() {
         Subscription subscription = new Subscription();
         subscription.setAmount(new BigDecimal("10.00"));
-        subscription.setRecurrence("MONTHLY");
+        subscription.setFrequency(Subscription.Frequency.MONTHLY);
         subscription.setNextPaymentDate(LocalDate.now());
         subscription.setUser(new User());
         Set<ConstraintViolation<Subscription>> violations = validator.validate(subscription);
@@ -44,7 +44,7 @@ public class SubscriptionValidationTests {
         Subscription subscription = new Subscription();
         subscription.setName("Spotify");
         subscription.setAmount(new BigDecimal("-5.00"));
-        subscription.setRecurrence("MONTHLY");
+        subscription.setFrequency(Subscription.Frequency.MONTHLY);
         subscription.setNextPaymentDate(LocalDate.now());
         subscription.setUser(new User());
 
@@ -60,7 +60,7 @@ public class SubscriptionValidationTests {
         Subscription subscription = new Subscription();
         subscription.setName("Disney+");
         subscription.setAmount(new BigDecimal("8.99"));
-        subscription.setRecurrence("MONTHLY");
+        subscription.setFrequency(Subscription.Frequency.MONTHLY);
         subscription.setNextPaymentDate(LocalDate.now());
         subscription.setUser(new User());
 

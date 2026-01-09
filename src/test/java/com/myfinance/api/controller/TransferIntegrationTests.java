@@ -12,8 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.web.servlet.MockMvc;
@@ -35,12 +34,12 @@ public class TransferIntegrationTests {
     @Autowired private MockMvc mockMvc;
     @Autowired private ObjectMapper objectMapper;
 
-    @MockBean private AccountRepository accountRepository;
-    @MockBean private TransactionRepository transactionRepository; 
-    @MockBean private CategoryRepository categoryRepository;
-    @MockBean private UserRepository userRepository;
-    @MockBean private JwtService jwtService;
-    @MockBean private UserDetailsService userDetailsService;
+    @MockitoBean private AccountRepository accountRepository;
+    @MockitoBean private TransactionRepository transactionRepository; 
+    @MockitoBean private CategoryRepository categoryRepository;
+    @MockitoBean private UserRepository userRepository;
+    @MockitoBean private JwtService jwtService;
+    @MockitoBean private UserDetailsService userDetailsService;
 
     private User mockUser;
     private Account originAccount;

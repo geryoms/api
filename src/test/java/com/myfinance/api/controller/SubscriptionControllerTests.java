@@ -16,7 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -37,11 +37,11 @@ public class SubscriptionControllerTests {
     @Autowired private MockMvc mockMvc;
     @Autowired private ObjectMapper objectMapper;
 
-    @MockBean private SubscriptionRepository subscriptionRepository;
-    @MockBean private JwtService jwtService;
-    @MockBean private UserDetailsService userDetailsService;
-    @MockBean private UserRepository userRepository;
-    @MockBean private com.myfinance.api.repository.AccountRepository accountRepository; 
+    @MockitoBean private SubscriptionRepository subscriptionRepository;
+    @MockitoBean private JwtService jwtService;
+    @MockitoBean private UserDetailsService userDetailsService;
+    @MockitoBean private UserRepository userRepository;
+    @MockitoBean private com.myfinance.api.repository.AccountRepository accountRepository; 
     private com.myfinance.api.model.Account mockAccount;
 
     @BeforeEach
@@ -70,7 +70,7 @@ public class SubscriptionControllerTests {
         Subscription subscription = new Subscription();
         subscription.setName("Netflix");
         subscription.setAmount(new BigDecimal("15.99"));
-        subscription.setRecurrence("MONTHLY");
+        subscription.setFrequency(Subscription.Frequency.MONTHLY);
         subscription.setNextPaymentDate(LocalDate.now().plusDays(5));
         
         subscription.setAccount(mockAccount);

@@ -13,8 +13,7 @@ import io.jsonwebtoken.security.Keys;
 public class JwtService {
 
 
-    private static final String SECRET_KEY = "MyFinanceSecretKey";
-
+private static final String SECRET_KEY = "c3VwZXJTZWNyZXRQYXNzd29yZEZvck15RmluYW5jZUFwcDIwMjY=";
     
     public String generateToken(UserDetails userDetails) {
         return Jwts.builder()
